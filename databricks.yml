@@ -1,0 +1,41 @@
+# This is a Databricks asset bundle definition for skyproject.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: skyproject
+  uuid: acc03ae0-84da-4b15-a74e-bdeb2c998146
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-297085293388204.4.azuredatabricks.net
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-297085293388204.4.azuredatabricks.net
+      # We explicitly deploy to /Workspace/Users/admin@mngenvmcap290089.onmicrosoft.com to make sure we only have a single copy.
+      #root_path: /Workspace/Users/admin@mngenvmcap290089.onmicrosoft.com/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/Users/admin@mngenvmcap290089.onmicrosoft.com/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: admin@mngenvmcap290089.onmicrosoft.com
+        level: CAN_MANAGE
+
+  dev2:
+    mode: production
+    workspace:
+      host: https://adb-297085293388204.4.azuredatabricks.net
+      # We explicitly deploy to /Workspace/Users/admin@mngenvmcap290089.onmicrosoft.com to make sure we only have a single copy.
+      #root_path: /Workspace/Users/admin@mngenvmcap290089.onmicrosoft.com/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Shared/${bundle.name}/
+    permissions:
+      - user_name: admin@mngenvmcap290089.onmicrosoft.com
+        level: CAN_MANAGE

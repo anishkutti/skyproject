@@ -1,0 +1,33 @@
+resources:
+  jobs:
+    skyproject_job:
+      name: skyproject_job
+
+      trigger:
+        # Run this job every day, exactly one day from the last run; see https://docs.databricks.com/api/workspace/jobs/create#trigger
+        periodic:
+          interval: 1
+          unit: DAYS
+
+      #email_notifications:
+      #  on_failure:
+      #    -
+      tasks:
+        - task_key: notebook_task
+          job_cluster_key: job_cluster
+          notebook_task:
+            notebook_path: ../src/notebook2.ipynb
+
+        - task_key: main_task
+          depends_on:
+            - task_key: notebook_task
+          
+          job_cluster_key: job_cluster
+          python_wheel_task:
+            package_name: skyproject
+            entry_point: main
+          libraries:
+            # By default we just include the .whl file generated for the skyproject package.
+            # See https://docs.databricks.com/dev-tools/bundles/library-dependencies.html
+            # for more information on how to add other libraries.
+            - whl: ../dist/*.whl
