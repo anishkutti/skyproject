@@ -17,6 +17,7 @@ jobs:
   deploy:
     name: 'Deploy bundle'
     runs-on: ubuntu-latest
+    environment: dev2
 
     steps:
       # Check out this repo, so that this workflow can access it.
@@ -38,6 +39,7 @@ jobs:
   pipeline_update:
     name: 'Run pipeline update'
     runs-on: ubuntu-latest
+    environment: dev2
 
     # Run the "deploy" job first.
     needs:
